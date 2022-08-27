@@ -38,6 +38,7 @@ def loadDataFromDB():
     #df = pd.csv('name', engine)
     return df
 
+@st.cache
 def loadDataFromCSV():
     df = pd.read_csv('data/sample_overview_data.csv.bz2')
     return df

@@ -38,6 +38,7 @@ def loadDataFromDB():
     userAppEng = pd.read_sql("select * from telecom.UserAppEngagement", engine)
     return userEng, userAppEng
 
+@st.cache
 def loadDataFromCSV():
     df1 = pd.read_csv('data/user_engagement.csv.bz2')
     df2 = pd.read_csv('data/user_app_engagement.csv.bz2')

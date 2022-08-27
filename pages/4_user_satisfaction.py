@@ -38,6 +38,7 @@ def loadDataFromDB():
     fromDb = pd.read_sql("select * from telecom.UserSatisfaction", engine)
     return fromDb
 
+@st.cache
 def loadDataFromCSV():
     df = pd.read_csv('data/user_satisfaction.csv.bz2')
     return df
