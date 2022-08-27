@@ -31,6 +31,7 @@ def loadData():
     return df
 
 
+# TODO
 @st.cache
 def loadDataFromDB():
     engine = createEngine(local= True)
@@ -44,23 +45,19 @@ def loadDataFromCSV():
     df2 = pd.read_csv('data/user_app_engagement.csv.bz2')
     return df1, df2
 
+# TODO : replace with loadDataFromDB
+df, df2 = loadDataFromCSV()
 
-def displayData():
+def displayData(df, df2):
     st.text('Overall Data')
-    # TODO
-    # df, df2 = loadDataFromDB()
-    df, df2 = loadDataFromCSV()
     st.title('User engagement')
     st.write(df)
     st.title('User application engagement')
     st.write(df2)
 
-def topCustomersPerEngagement(numberOfCustomers):
+def topCustomersPerEngagement(numberOfCustomers, df, df2):
     """
     """
-    # TODO
-    # df, df2 = loadDataFromDB()
-    df, df2 = loadDataFromCSV()
     df = df[['MSISDN/Number', 'XDR Sessions', 'Dur. (ms)', 'total_data']]
     cols_list = ['XDR Sessions', 'Dur. (ms)', 'total_data']
     source = st.selectbox("choose aggregate feature", cols_list)
@@ -69,10 +66,7 @@ def topCustomersPerEngagement(numberOfCustomers):
     st.bar_chart(data=df_)
     st.write(df_)
 
-def showCluster():
-    # TODO
-    # df, df2 = loadDataFromDB()
-    df, df2 = loadDataFromCSV()
+def showCluster(df, df2):
     # visualizing the 3 clusters in the dataframe
     # for 20, 000 samples only
     fig = px.scatter(df, x='total_data', y='Dur. (ms)',
@@ -86,14 +80,14 @@ def showCluster():
 
 st.title('User engagement analysis')
 
-displayData()
+displayData(df, df2)
 
 
 st.markdown("<p style='padding:10px; background-color:#000000;color:#00ECB9;font-size:16px;border-radius:10px;'>Top customers per engagement metric</p>", unsafe_allow_html=True)
 
 numberOfCustomers = st.slider('top customers', 0, 100, 10)
-topCustomersPerEngagement(numberOfCustomers)
+topCustomersPerEngagement(numberOfCustomers, df, df2)
 
 
 st.markdown("<p style='padding:10px; background-color:#000000;color:#00ECB9;font-size:16px;border-radius:10px;'>Engagement clusters</p>", unsafe_allow_html=True)
-showCluster()
+showCluster(df, df2)
