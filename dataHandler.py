@@ -133,18 +133,36 @@ def createEngine():
     engine = create_engine('mysql+pymysql://root:@localhost/telecom')
     return engine 
 
-def addToTable(engine):
+def addToTable(engine, all: bool = True):
     # writing to the data base server
-    try:
-        print('reading csv as a pandas dataframe...')
-        user_overview_df = pd.read_csv('Week1_challenge_data_source_filled.csv.bz2')
-        
-        print('writing to the database...')
-        frame = user_overview_df.sample(frac=0.01).to_sql("UserOverview", con=engine, if_exists='replace')
+    if all:
+        try:
+            print('reading csv files as a pandas dataframe...')
+            user_ove_df = pd.read_csv('Week1_challenge_data_source_filled.csv.bz2')
+            user_eng_df = pd.read_csv('Week1_challenge_data_source_filled.csv.bz2')
+            user_exp_df = pd.read_csv('Week1_challenge_data_source_filled.csv.bz2')
+            user_sat_df = pd.read_csv('Week1_challenge_data_source_filled.csv.bz2')
+            
+            print('writing to the database...')
+            frame = user_ove_df.sample(frac=0.01).to_sql("UserOverview", con=engine, if_exists='replace')
+            frame = user_eng_df.sample(frac=0.01).to_sql("UserEngagement", con=engine, if_exists='replace')
+            frame = user_exp_df.sample(frac=0.01).to_sql("UserExperience", con=engine, if_exists='replace')
+            frame = user_sat_df.sample(frac=0.01).to_sql("UserSatisfaction", con=engine, if_exists='replace')
+            
+            print('serval tables successfully saved to database')
+        except Exception as e:
+            print("Error writing to database: ", e)
+    else:
+        try:
+            print('reading csv file as a pandas dataframe...')
+            user_ove_df = pd.read_csv('Week1_challenge_data_source_filled.csv.bz2')
 
-        print('data successfully saved to database')
-    except Exception as e:
-        print("Error writing to database: ", e)
+            print('writing to the database...')
+            frame = user_ove_df.sample(frac=0.01).to_sql("UserOverview", con=engine, if_exists='replace')
+            print('data successfully saved to database')
+        except Exception as e:
+            print("Error writing to database: ", e)
+
 
 if __name__ == "__main__":
     #connection = dbConnect(dbName='telecom.db')
@@ -165,10 +183,10 @@ if __name__ == "__main__":
     print('generating database engine...')
     engine = createEngine()
 
-    #addToTable(engine)
+    #addToTable(engine, all = False)
 
     # reading data from the data base server
     fromDb =pd.read_sql("select * from telecom.UserOverview", engine)
     print(fromDb)
-    
+
     # -------------- #

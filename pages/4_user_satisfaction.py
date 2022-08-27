@@ -19,7 +19,7 @@ sys.path.append('..')
 from dataHandler import *
 
 # set the page and title
-st.set_page_config(page_title="Telecom data analysis", layout="wide")
+st.set_page_config(page_title="User satisfaction", layout="wide")
 
 @st.cache
 def loadData():
