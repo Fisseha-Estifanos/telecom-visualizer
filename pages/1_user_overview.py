@@ -37,11 +37,17 @@ def loadDataFromDB():
     df = pd.read_sql("select * from telecom.UserOverview", engine)
     #df = pd.csv('name', engine)
     return df
+
+def loadDataFromCSV():
+    df = pd.read_csv('data/sample_overview_data.csv.bz2')
+    return df
     
 
 def displayData():
     st.text('Overall Data')
-    df = loadDataFromDB()
+    # TODO
+    # df = loadDataFromDB()
+    df = loadDataFromCSV()
     st.write(df)
 
 
@@ -51,7 +57,10 @@ def selectTopHeadsets(num):
     """
     st.text('Top handsets')
 
-    df = loadDataFromDB()
+    # TODO
+    # df = loadDataFromDB()
+    df = loadDataFromCSV()
+    
     top_headsets_list_df = df["Handset Type"].value_counts().nlargest(n=num)
     st.write(top_headsets_list_df)
 
@@ -65,7 +74,10 @@ def selectTopHeadsets(num):
 
 
 def topHandsetsByManufacturers(handset, handsetManufac):
-    df = loadDataFromDB()
+    # TODO
+    # df = loadDataFromDB()
+    df = loadDataFromCSV()
+
     apple_manufacturer = df.loc[df['Handset Manufacturer'] == 'Apple', ['Handset Type']].value_counts().nlargest(handset)
     samsung_manufacturer = df.loc[df['Handset Manufacturer'] == 'Samsung', ['Handset Type']].value_counts().nlargest(handset)
     huawei_manufacturer = df.loc[df['Handset Manufacturer'] == 'Huawei', ['Handset Type']].value_counts().nlargest(handset)
@@ -81,7 +93,10 @@ def topHandsetsByManufacturers(handset, handsetManufac):
 
 
 def manufacturerPie(manufacturer_Num):
-    df = loadDataFromDB()
+    # TODO
+    # df = loadDataFromDB()
+    df = loadDataFromCSV()
+
     dfLangCount = df['Handset Manufacturer'].value_counts().nlargest(n=manufacturer_Num)
     st.title("Top head sets per manufacturer")
     fig1, ax1 = plt.subplots()
@@ -94,7 +109,10 @@ def manufacturerPie(manufacturer_Num):
 def aggregatePerUser():
     """
     """
-    df = loadDataFromDB()
+    # TODO
+    # df = loadDataFromDB()
+    df = loadDataFromCSV()
+
     cols_list = ['Bearer Id', 'Dur. (ms)', 'total_data']
     source = st.selectbox("choose aggregate feature", cols_list)
     df_ = df.groupby('MSISDN/Number')[source].sum()
