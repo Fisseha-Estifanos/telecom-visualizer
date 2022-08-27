@@ -98,10 +98,10 @@ def aggregatePerUser():
     df = loadDataFromDB()
     cols_list = ['Bearer Id', 'Dur. (ms)', 'total_data']
     source = st.selectbox("choose aggregate feature", cols_list)
-    df = df.groupby('MSISDN/Number')[source].sum()
+    df_ = df.groupby('MSISDN/Number')[source].sum()
     st.title("User aggregate per " + str(source))
-    st.write(df)
-
+    #st.write(df)
+    st.bar_chart(data=df_)
 
 st.title('User overview analysis')
 
