@@ -1,15 +1,13 @@
 # import libraries
+import os
+import sys
 import numpy as np
 import pandas as pd
-import streamlit as st
-import altair as alt
-from wordcloud import WordCloud
-import plotly.express as px
-import sys
-import os
-import matplotlib.pyplot as plt
 import seaborn as sns
+import altair as alt
+import streamlit as st
 import plotly.express as px
+import matplotlib.pyplot as plt
 
 
 sys.path.append('.')
