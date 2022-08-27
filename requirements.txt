@@ -3,4 +3,5 @@ plotly-express>=0.4.1
 seaborn
 plotly
 sqlalchemy
-sqlite3
+plotly-express
+#sqlite3
