@@ -4,4 +4,5 @@ seaborn
 plotly
 sqlalchemy
 plotly-express
+PyMySql
 #sqlite3
