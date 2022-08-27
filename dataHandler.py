@@ -164,9 +164,11 @@ if __name__ == "__main__":
     # get database engine
     print('generating database engine...')
     engine = createEngine()
-    addToTable(engine)
+
+    #addToTable(engine)
 
     # reading data from the data base server
-    pd.read_sql("select * from telecom.UserOverview", engine)
-
+    fromDb =pd.read_sql("select * from telecom.UserOverview", engine)
+    print(fromDb)
+    
     # -------------- #
