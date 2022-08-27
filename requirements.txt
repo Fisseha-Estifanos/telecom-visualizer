@@ -1,2 +1,4 @@
 wordcloud>=1.8.2.2
 plotly-express>=0.4.1
+seaborn
+plotly
