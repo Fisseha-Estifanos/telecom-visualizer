@@ -3,7 +3,7 @@ import pandas as pd
 import sqlite3
 from sqlite3 import Error
 
-def DBConnect(dbName=None):
+def dbConnect(dbName=None):
     """
     A data base connection creator method.
 
@@ -21,7 +21,7 @@ def DBConnect(dbName=None):
     print(conn)
     return conn
 
-def execute_query(connection: sqlite3.Connection, query:str) -> None:
+def executeQuery(connection: sqlite3.Connection, query:str) -> None:
     """
     A data base query executor method, based on a given connection string and a query string
 
@@ -48,7 +48,7 @@ def execute_query(connection: sqlite3.Connection, query:str) -> None:
     except Error as e:
         print(f"The error '{e}' occurred")
 
-def insert_to_tweet_table(connection: sqlite3.Connection, df: pd.DataFrame, table_name: str) -> None:
+def insertToTable(connection: sqlite3.Connection, df: pd.DataFrame, table_name: str) -> None:
     """
     A method to insert dataframe data into a data base
 
@@ -81,7 +81,7 @@ def insert_to_tweet_table(connection: sqlite3.Connection, df: pd.DataFrame, tabl
             connection.rollback()
             print("Error: ", e)
 
-def db_execute_fetch(connection:sqlite3.Connection, selection_query : str, dbName : str, rdf=True, many = False) -> pd.DataFrame:
+def dbExecuteFetch(connection:sqlite3.Connection, selection_query : str, dbName : str, rdf=True, many = False) -> pd.DataFrame:
     """
     A method to execute a fetch query based on a given selection query 
 
@@ -125,14 +125,14 @@ def db_execute_fetch(connection:sqlite3.Connection, selection_query : str, dbNam
         return result
 
 if __name__ == "__main__":
-    connection = DBConnect(dbName='tweets.db')
-    execute_query(connection=connection, query='create_table.sql')
+    connection = dbConnect(dbName='telecom.db')
+    executeQuery(connection=connection, query='create_user_overview_table.sql')
 
     df = pd.read_csv('clean_data.csv')
     sample_df = df.copy()
     
-    insert_to_tweet_table(connection=connection, df=sample_df, table_name='TweetInformation')
+    insertToTable(connection=connection, df=sample_df, table_name='TweetInformation')
 
     select_query = "select * from TweetInformation"
-    returned_df = db_execute_fetch(connection, select_query, dbName="tweets.db", rdf=True)
+    returned_df = dbExecuteFetch(connection, select_query, dbName="telecom.db", rdf=True)
     returned_df.info()
