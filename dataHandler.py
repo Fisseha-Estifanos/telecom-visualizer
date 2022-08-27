@@ -128,9 +128,13 @@ def dbExecuteFetch(connection:sqlite3.Connection, selection_query : str, dbName 
     else:
         return result
 
-def createEngine():
+def createEngine(local: bool = False):
     # create an engine to connect to our data base server
-    engine = create_engine('mysql+pymysql://root:@localhost/telecom')
+    if local:
+        path = 'mysql+pymysql://root:@localhost/telecom'
+    else: 
+        path = 'https://drive.google.com/file/d/1LdE5yAzEeNWC7xVAQ6tv4A-p0sS58pJi/view?usp=sharing'
+    engine = create_engine(path)
     return engine 
 
 def addToTable(engine, all: bool = False):
