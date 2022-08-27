@@ -64,8 +64,7 @@ def selectTopHeadsets(num):
     st.bar_chart(top_headsets_list_df.sort_values(ascending = False))
 
 
-st.title("Telecom Data Analysis")
-st.subheader('User overview analysis')
+st.title('User overview analysis')
 
 displayData()
 
