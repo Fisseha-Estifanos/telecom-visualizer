@@ -31,7 +31,7 @@ def loadData():
     df = dbExecuteFetch(connection, query, dbName="telecom.db", rdf=True)
     return df
 
-
+# TODO
 @st.cache
 def loadDataFromDB():
     engine = createEngine(local= True)
@@ -44,16 +44,16 @@ def loadDataFromCSV():
     return df
 
 
-def displayData():
+# TODO : replace with loadDataFromDB
+df = loadDataFromCSV()
+
+def displayData(df):
     st.text('Overall Data')
-    # TODO
-    # df = loadDataFromDB()
-    df = loadDataFromCSV()
     st.write(df)
 
 
 st.title('User satisfaction analysis')
 
-displayData()
+displayData(df)
 
 st.markdown("<p style='padding:10px; background-color:#000000;color:#00ECB9;font-size:16px;border-radius:10px;'>First visualizer ote goes here</p>", unsafe_allow_html=True)
