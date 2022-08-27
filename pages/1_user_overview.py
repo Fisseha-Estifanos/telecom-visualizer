@@ -63,6 +63,15 @@ def selectTopHeadsets(num):
     plt.title('top handset types')
     st.bar_chart(top_headsets_list_df.sort_values(ascending = False))
 
+def topHandsetsByManufacturers(handset, handsetManufac):
+    df = loadDataFromDB()
+    apple_manufacturer = df.loc[df['Handset Manufacturer'] == 'Apple', ['Handset Type']].value_counts().nlargest(handset)
+    samsung_manufacturer = df.loc[df['Handset Manufacturer'] == 'Samsung', ['Handset Type']].value_counts().nlargest(handset)
+    huawei_manufacturer = df.loc[df['Handset Manufacturer'] == 'Huawei', ['Handset Type']].value_counts().nlargest(handset)
+
+    st.write(apple_manufacturer, samsung_manufacturer, huawei_manufacturer)
+    #st.write(samsung_manufacturer)
+    #st.write(huawei_manufacturer)
 
 st.title('User overview analysis')
 
@@ -73,3 +82,12 @@ st.markdown("<p style='padding:10px; background-color:#000000;color:#00ECB9;font
 # Some number in the range 0-100
 num = st.slider('top headsets', 0, 100, 10)
 selectTopHeadsets(num)
+
+
+st.markdown("<p style='padding:10px; background-color:#000000;color:#00ECB9;font-size:16px;border-radius:10px;'>Top handsets per top handset manufactures</p>", unsafe_allow_html=True)
+
+handsetNum = st.slider('top headsets', 0, 20, 5)
+man_Num = st.slider('top headset manufacturer', 0, 20, 3)
+topHandsetsByManufacturers(handsetNum, man_Num)
+
+
