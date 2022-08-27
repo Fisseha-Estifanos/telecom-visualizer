@@ -38,10 +38,17 @@ def loadDataFromDB():
     userAppEng = pd.read_sql("select * from telecom.UserAppEngagement", engine)
     return userEng, userAppEng
 
+def loadDataFromCSV():
+    df1 = pd.read_csv('data/user_engagement.csv.bz2')
+    df2 = pd.read_csv('data/user_app_engagement.csv.bz2')
+    return df1, df2
+
 
 def displayData():
     st.text('Overall Data')
-    df, df2 = loadDataFromDB()
+    # TODO
+    # df, df2 = loadDataFromDB()
+    df, df2 = loadDataFromCSV()
     st.title('User engagement')
     st.write(df)
     st.title('User application engagement')
@@ -50,7 +57,9 @@ def displayData():
 def topCustomersPerEngagement(numberOfCustomers):
     """
     """
-    df, df2 = loadDataFromDB()
+    # TODO
+    # df, df2 = loadDataFromDB()
+    df, df2 = loadDataFromCSV()
     df = df[['MSISDN/Number', 'XDR Sessions', 'Dur. (ms)', 'total_data']]
     cols_list = ['XDR Sessions', 'Dur. (ms)', 'total_data']
     source = st.selectbox("choose aggregate feature", cols_list)
@@ -60,7 +69,9 @@ def topCustomersPerEngagement(numberOfCustomers):
     st.write(df_)
 
 def showCluster():
-    df, df2 = loadDataFromDB()
+    # TODO
+    # df, df2 = loadDataFromDB()
+    df, df2 = loadDataFromCSV()
     # visualizing the 3 clusters in the dataframe
     # for 20, 000 samples only
     fig = px.scatter(df, x='total_data', y='Dur. (ms)',

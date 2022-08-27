@@ -38,10 +38,15 @@ def loadDataFromDB():
     fromDb = pd.read_sql("select * from telecom.UserExperience", engine)
     return fromDb
 
+def loadDataFromCSV():
+    df = pd.read_csv('data/user_experience_.csv.bz2')
+    return df
 
 def displayData():
     st.text('Overall Data')
-    df = loadDataFromDB()
+    # TODO
+    # df = loadDataFromDB()
+    df = loadDataFromCSV()
     st.write(df)
 
 
