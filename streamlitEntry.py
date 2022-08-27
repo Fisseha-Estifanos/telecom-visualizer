@@ -29,4 +29,17 @@ def loadData():
     return df
 
 
+def loadDataFromDB():
+    engine = createEngine()
+    fromDb = pd.read_sql("select * from telecom.UserOverview", engine)
+    return fromDb
+
+
+def displayData():
+    df = loadDataFromDB()
+    st.write(df)
+
+
+
 st.title("Telecom Data Analysis")
+displayData()
