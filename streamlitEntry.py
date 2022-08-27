@@ -23,7 +23,10 @@ def loadData():
     """
     A method to load the data from our data base
     """
-    connection = DBConnect(dbName='tweets.db')
-    query = "select * from TweetInformation"
-    df = db_execute_fetch(connection, query, dbName="tweets.db", rdf=True)
+    connection = dbConnect(dbName='telecom.db')
+    query = "select * from userOverview"
+    df = dbExecuteFetch(connection, query, dbName="telecom.db", rdf=True)
     return df
+
+
+st.title("Telecom Data Analysis")

@@ -131,8 +131,8 @@ if __name__ == "__main__":
     df = pd.read_csv('clean_data.csv')
     sample_df = df.copy()
     
-    insertToTable(connection=connection, df=sample_df, table_name='TweetInformation')
+    insertToTable(connection=connection, df=sample_df, table_name='userOverview')
 
-    select_query = "select * from TweetInformation"
+    select_query = "select * from userOverview"
     returned_df = dbExecuteFetch(connection, select_query, dbName="telecom.db", rdf=True)
     returned_df.info()
