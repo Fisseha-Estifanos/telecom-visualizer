@@ -2,6 +2,8 @@
 import pandas as pd
 import sqlite3
 from sqlite3 import Error
+from sqlalchemy import create_engine
+
 
 def dbConnect(dbName=None):
     """
@@ -18,7 +20,8 @@ def dbConnect(dbName=None):
     -------
     """
     conn = sqlite3.connect(dbName)
-    print(conn)
+    print(f'connection created: {conn}')
+    print(f'database name: {dbName}')
     return conn
 
 def executeQuery(connection: sqlite3.Connection, query:str) -> None:
@@ -37,6 +40,7 @@ def executeQuery(connection: sqlite3.Connection, query:str) -> None:
     """
 
     cursor = connection.cursor()
+    print(f'query string: {query}')
     fd = open(query, 'r')
     sql_query = fd.read()
     fd.close()
@@ -65,9 +69,9 @@ def insertToTable(connection: sqlite3.Connection, df: pd.DataFrame, table_name: 
     -------
     """
     for _, row in df.iterrows():
-        sqlQuery = f"""INSERT INTO {table_name} (created_at, source, original_text, polarity, subjectivity, lang, favorite_count, statuses_count, retweet_count, screen_name, original_author, followers_count, friends_count, possibly_sensitive, hashtags, user_mentions, place, clean_hashtags, clean_mentions)
-             VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"""
-        data = (row[0], row[1], row[2], row[3], (row[4]), (row[5]), row[6], row[7], row[8], row[9], row[10], row[11], row[12], row[13], row[14], row[15], row[16], row[17], row[18])
+        sqlQuery = f"""INSERT INTO {table_name} ('Bearer Id', Start, End, Dur, IMSI, 'MSISDN/Number', IMEI, 'Last Location Name', 'Avg RTT DL (ms)', 'Avg RTT UL (ms)', 'Avg Bearer TP DL (kbps)', 'Avg Bearer TP UL (kbps)', 'TCP DL Retrans. Vol (Bytes)', 'TCP UL Retrans. Vol (Bytes)', 'HTTP DL (Bytes)', 'HTTP UL (Bytes)', 'Activity Duration DL (ms)', 'Activity Duration UL (ms)', 'Handset Manufacturer', 'Handset Type')
+             VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"""
+        data = (row[0], row[1], row[2], row[3], (row[4]), (row[5]), row[6], row[7], row[8], row[9], row[10], row[11], row[12], row[13], row[14], row[15], row[16], row[17], row[18], row[19])
 
         try:
             cur = connection.cursor()
@@ -124,15 +128,45 @@ def dbExecuteFetch(connection:sqlite3.Connection, selection_query : str, dbName 
     else:
         return result
 
+def createEngine():
+    # create an engine to connect to our data base server
+    engine = create_engine('mysql+pymysql://root:@localhost/telecom')
+    return engine 
+
+def addToTable(engine):
+    # writing to the data base server
+    try:
+        print('reading csv as a pandas dataframe...')
+        user_overview_df = pd.read_csv('Week1_challenge_data_source_filled.csv.bz2')
+        
+        print('writing to the database...')
+        frame = user_overview_df.sample(frac=0.01).to_sql("UserOverview", con=engine, if_exists='replace')
+
+        print('data successfully saved to database')
+    except Exception as e:
+        print("Error writing to database: ", e)
+
 if __name__ == "__main__":
-    connection = dbConnect(dbName='telecom.db')
-    executeQuery(connection=connection, query='create_user_overview_table.sql')
+    #connection = dbConnect(dbName='telecom.db')
+    #executeQuery(connection=connection, query='create_user_overview_table.sql')
 
-    df = pd.read_csv('clean_data.csv')
-    sample_df = df.copy()
+    #df = pd.read_csv('Week1_challenge_data_source_filled.csv.bz2')
+    #sample_df = df.copy()
     
-    insertToTable(connection=connection, df=sample_df, table_name='userOverview')
+    #insertToTable(connection=connection, df=sample_df.iloc[:1000], table_name='UserOverview')
 
-    select_query = "select * from userOverview"
-    returned_df = dbExecuteFetch(connection, select_query, dbName="telecom.db", rdf=True)
-    returned_df.info()
+    #select_query = "select * from UserOverview"
+    #returned_df = dbExecuteFetch(connection, select_query, dbName="telecom.db", rdf=True)
+    #returned_df.info()
+
+    # -------------- #
+
+    # get database engine
+    print('generating database engine...')
+    engine = createEngine()
+    addToTable(engine)
+
+    # reading data from the data base server
+    pd.read_sql("select * from telecom.UserOverview", engine)
+
+    # -------------- #
