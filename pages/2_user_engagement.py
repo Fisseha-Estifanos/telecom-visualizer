@@ -33,7 +33,7 @@ def loadData():
 
 @st.cache
 def loadDataFromDB():
-    engine = createEngine()
+    engine = createEngine(local= True)
     userEng = pd.read_sql("select * from telecom.UserEngagement", engine)
     userAppEng = pd.read_sql("select * from telecom.UserAppEngagement", engine)
     return userEng, userAppEng

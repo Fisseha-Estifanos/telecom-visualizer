@@ -33,10 +33,11 @@ def loadData():
 
 @st.cache
 def loadDataFromDB():
-    engine = createEngine()
-    fromDb = pd.read_sql("select * from telecom.UserOverview", engine)
-    return fromDb
-
+    engine = createEngine(local=False)
+    df = pd.read_sql("select * from telecom.UserOverview", engine)
+    #df = pd.csv('name', engine)
+    return df
+    
 
 def displayData():
     st.text('Overall Data')

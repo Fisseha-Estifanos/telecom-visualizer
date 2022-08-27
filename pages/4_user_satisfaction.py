@@ -34,7 +34,7 @@ def loadData():
 
 @st.cache
 def loadDataFromDB():
-    engine = createEngine()
+    engine = createEngine(local= True)
     fromDb = pd.read_sql("select * from telecom.UserSatisfaction", engine)
     return fromDb
 
