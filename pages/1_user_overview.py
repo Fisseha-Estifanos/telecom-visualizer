@@ -84,16 +84,24 @@ def topHandsetsByManufacturers(handset, handsetManufac):
 def manufacturerPie(manufacturer_Num):
     df = loadDataFromDB()
     dfLangCount = df['Handset Manufacturer'].value_counts().nlargest(n=manufacturer_Num)
-    print(list(dfLangCount.keys()))
-    print(dfLangCount.values)
     st.title("Top head sets per manufacturer")
-
     fig1, ax1 = plt.subplots()
     ax1.pie(dfLangCount.values, labels=dfLangCount.keys(), autopct='%.000f%%',
             shadow=True, startangle=90)
     ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-
     st.pyplot(fig1)
+
+
+def aggregatePerUser():
+    """
+    """
+    df = loadDataFromDB()
+    cols_list = ['Bearer Id', 'Dur. (ms)', 'total_data']
+    source = st.selectbox("choose aggregate feature", cols_list)
+    df = df.groupby('MSISDN/Number')[source].sum()
+    st.title("User aggregate per " + str(source))
+    st.write(df)
+
 
 st.title('User overview analysis')
 
@@ -117,5 +125,10 @@ st.markdown("<p style='padding:10px; background-color:#000000;color:#00ECB9;font
 
 manufacturer_Num = st.slider('top headset manufacturer', 0, 20, 3, key='manufacturer_Num')
 manufacturerPie(manufacturer_Num)
+
+
+st.markdown("<p style='padding:10px; background-color:#000000;color:#00ECB9;font-size:16px;border-radius:10px;'>Aggregates per user</p>", unsafe_allow_html=True)
+
+aggregatePerUser()
 
 
