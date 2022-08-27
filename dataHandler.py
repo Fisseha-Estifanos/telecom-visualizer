@@ -141,11 +141,11 @@ def addToTable(engine, all: bool = False):
             user_ove_df = pd.read_csv('Week1_challenge_data_source_filled.csv.bz2')
             user_eng_df = pd.read_csv('user_engagement.csv.bz2')
             user_app_eng_df = pd.read_csv('user_app_engagement.csv.bz2')
-            user_exp_df = pd.read_csv('user_experience.csv.bz2')
+            user_exp_df = pd.read_csv('user_experience_.csv.bz2')
             user_sat_df = pd.read_csv('user_satisfaction.csv.bz2')
             
             print('writing to the database...')
-            frame1 = user_ove_df.sample(frac=0.01).to_sql("UserOverview", con=engine, if_exists='replace')
+            frame1 = user_ove_df.sample(frac=0.1).to_sql("UserOverview", con=engine, if_exists='replace')
             frame2 = user_eng_df.sample(frac=1.00).to_sql("UserEngagement", con=engine, if_exists='replace')
             frame3 = user_app_eng_df.sample(frac=1.00).to_sql("UserAppEngagement", con=engine, if_exists='replace')
             frame4 = user_exp_df.sample(frac=1.00).to_sql("UserExperience", con=engine, if_exists='replace')
