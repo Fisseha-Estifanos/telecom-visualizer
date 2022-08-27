@@ -1,14 +1,13 @@
 # import libraries
+import os
+import sys
 import numpy as np
 import pandas as pd
-import streamlit as st
-import altair as alt
-from wordcloud import WordCloud
-import plotly.express as px
-import sys
-import os
-import matplotlib.pyplot as plt
 import seaborn as sns
+import altair as alt
+import streamlit as st
+import plotly.express as px
+import matplotlib.pyplot as plt
 
 
 sys.path.append('.')
@@ -42,12 +41,47 @@ def loadDataFromDB():
 
 def displayData():
     st.text('Overall Data')
-    df = loadDataFromDB()
+    df, df2 = loadDataFromDB()
+    st.title('User engagement')
     st.write(df)
+    st.title('User application engagement')
+    st.write(df2)
 
+def topCustomersPerEngagement(numberOfCustomers):
+    """
+    """
+    df, df2 = loadDataFromDB()
+    df = df[['MSISDN/Number', 'XDR Sessions', 'Dur. (ms)', 'total_data']]
+    cols_list = ['XDR Sessions', 'Dur. (ms)', 'total_data']
+    source = st.selectbox("choose aggregate feature", cols_list)
+    df_ = df.nlargest(numberOfCustomers, source)
+    st.title("User aggregate per " + str(source))
+    st.bar_chart(data=df_)
+    st.write(df_)
+
+def showCluster():
+    df, df2 = loadDataFromDB()
+    # visualizing the 3 clusters in the dataframe
+    # for 20, 000 samples only
+    fig = px.scatter(df, x='total_data', y='Dur. (ms)',
+                    color='cluster', size='XDR Sessions')
+    fig.update_traces(marker_size=8)
+    fig.update(layout_yaxis_range = [0, 800000])
+    fig.update(layout_xaxis_range = [0, 4000000000])
+    fig.show()
+    # Plot!
+    st.plotly_chart(fig, use_container_width=True)
 
 st.title('User engagement analysis')
 
 displayData()
 
-st.markdown("<p style='padding:10px; background-color:#000000;color:#00ECB9;font-size:16px;border-radius:10px;'>First visualizer ote goes here</p>", unsafe_allow_html=True)
+
+st.markdown("<p style='padding:10px; background-color:#000000;color:#00ECB9;font-size:16px;border-radius:10px;'>Top customers per engagement metric</p>", unsafe_allow_html=True)
+
+numberOfCustomers = st.slider('top customers', 0, 100, 10)
+topCustomersPerEngagement(numberOfCustomers)
+
+
+st.markdown("<p style='padding:10px; background-color:#000000;color:#00ECB9;font-size:16px;border-radius:10px;'>Engagement clusters</p>", unsafe_allow_html=True)
+showCluster()
