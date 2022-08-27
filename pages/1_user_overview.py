@@ -32,6 +32,7 @@ def loadData():
     return df
 
 
+# TODO
 @st.cache
 def loadDataFromDB():
     engine = createEngine(local=False)
@@ -45,15 +46,12 @@ def loadDataFromCSV():
     df = pd.read_csv('data/sample_overview_data.csv.bz2')
     return df
 
-
+# TODO : replace with loadDataFromDB
 baseDF = loadDataFromCSV()
 
 
 def displayData(baseDF):
     st.text('Overall Data')
-    # TODO
-    # df = loadDataFromDB()
-    # df = loadDataFromCSV()
     st.write(baseDF)
 
 
@@ -62,10 +60,6 @@ def selectTopHeadsets(num, baseDF):
     hashtags filter
     """
     st.text('Top handsets')
-
-    # TODO
-    # df = loadDataFromDB()
-    # df = loadDataFromCSV()
     
     top_headsets_list_df = baseDF["Handset Type"].value_counts().nlargest(n=num)
     st.write(top_headsets_list_df)
@@ -80,10 +74,6 @@ def selectTopHeadsets(num, baseDF):
 
 
 def topHandsetsByManufacturers(handset, handsetManufac, baseDF):
-    # TODO
-    # df = loadDataFromDB()
-    # df = loadDataFromCSV()
-
     apple_manufacturer = baseDF.loc[baseDF['Handset Manufacturer'] == 'Apple', ['Handset Type']].value_counts().nlargest(handset)
     samsung_manufacturer = baseDF.loc[baseDF['Handset Manufacturer'] == 'Samsung', ['Handset Type']].value_counts().nlargest(handset)
     huawei_manufacturer = baseDF.loc[baseDF['Handset Manufacturer'] == 'Huawei', ['Handset Type']].value_counts().nlargest(handset)
@@ -99,10 +89,6 @@ def topHandsetsByManufacturers(handset, handsetManufac, baseDF):
 
 
 def manufacturerPie(manufacturer_Num, baseDF):
-    # TODO
-    # df = loadDataFromDB()
-    # df = loadDataFromCSV()
-
     dfLangCount = baseDF['Handset Manufacturer'].value_counts().nlargest(n=manufacturer_Num)
     st.title("Top head sets per manufacturer")
     fig1, ax1 = plt.subplots()
@@ -115,10 +101,6 @@ def manufacturerPie(manufacturer_Num, baseDF):
 def aggregatePerUser(baseDF):
     """
     """
-    # TODO
-    # df = loadDataFromDB()
-    # df = loadDataFromCSV()
-
     cols_list = ['Bearer Id', 'Dur. (ms)', 'total_data']
     source = st.selectbox("choose aggregate feature", cols_list)
     df_ = baseDF.groupby('MSISDN/Number')[source].sum()
