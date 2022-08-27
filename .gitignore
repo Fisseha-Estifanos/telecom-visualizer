@@ -130,7 +130,7 @@ dmypy.json
 
 # data related
 Week1_challenge_data_source_filled.csv.bz2
-user_*
+#user_*
 
 # test scripts
 fracthis.py
